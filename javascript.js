@@ -2,10 +2,6 @@ console.log("Welcome to Rock, Paper, Scissors");
 
 // getComputerChoice returns a random string of rock, paper or scissors using Math.random();
 function getComputerChoice(){
-    // CREATE a variable that will be the computer's choice
-    // USE match.random to return a random number between 1 and 3
-    // IF math.random is between 0 and 1, have it equal rock, if between 1 and 2 have it equal paper, if between 2 and 3 have it equal scissors.
-    // RETURN the string of the result.
     let choice = "";
     let randomNumber = Math.random() * 3;
     if (randomNumber <= 1){
@@ -15,44 +11,56 @@ function getComputerChoice(){
     } else {
         choice = "scissors";
     }
-    //console.log(choice);
     return choice;
 }
 
-/* getComputerChoice();
-getComputerChoice();
-getComputerChoice(); */
+// The code below returns rock, paper or scissors depending on what the user clicks.
+const rockBtn = document.querySelector('#rock-btn');
+const paperBtn = document.querySelector('#paper-btn');
+const scissorsBtn = document.querySelector('#scissors-btn');
 
-function getHumanChoice() {
-    // CREATE variable that will be the human's choice
-    // USE prompt method to get the user's input
-    //RETURN the string of the result entered.
-    let choice = prompt("Please enter rock, paper or scissors");
-    choice = String(choice);
-    choice = choice.toLowerCase();
-    //console.log(choice);
-    return choice;
+const throws = document.querySelector('#throws');
+const results = document.querySelector('#results');
+const hScore = document.querySelector('#human-score');
+const cScore = document.querySelector("#computer-score");
+
+const resetBtn = document.querySelector('#reset');
+
+function getHumanChoice(evt) {
+    if(totalGames<5){
+    let choice = evt.currentTarget.id;
+    if (choice === "rock-btn"){
+        choice = "rock"
+    } else if (choice === "paper-btn"){
+        choice = "paper"
+    } else {
+        choice = "scissors"
+    }
+    playRound(choice);
+}
 }
 
-// getHumanChoice();
+
 
 let humanScore = 0;
 let computerScore = 0;
+let totalGames =0;
 
+throws.textContent =`Weclome to...`
+results.textContent = `Rock, Paper, Scissors!`;
+hScore.textContent = `Your Score is ${humanScore}`;
+cScore.textContent = `Computer Score is ${computerScore}`;
 
 console.log("Your Score is " + humanScore);
 console.log("Computer Score is " + computerScore);
 
-function playRound() {
-    // DEFINE two parameters for playRound: humanChoice and computerChoice to take the human and computer choices as arguments.
-    // COMPARE results and determine winner
-    // RETURN winner
+function playRound(choice) {
     let outcome = "";
-    const humanSelection = getHumanChoice();
+    const humanSelection = choice;
     const computerSelection = getComputerChoice();
+    throws.textContent = `Human throws ${humanSelection}! Computer throws ${computerSelection}!`
     console.log("Human throws "+ humanSelection+ "!");
     console.log("Computer throws "+ computerSelection+ "!");
-
     if (humanSelection === "rock" && computerSelection === "rock" ){
        outcome = "You both threw rocks, you tied.";
     } else if (humanSelection === "rock" && computerSelection === "paper" ){
@@ -78,48 +86,45 @@ function playRound() {
     } else {
             outcome = "You both threw scissors, you tied."
         }
+    console.log("Your Score is " + humanScore);
+    console.log("Computer Score is " + computerScore);
+    totalGames++
+    let endResult ='';
+    if (totalGames < 5){
+        hScore.textContent = `Your Score is ${humanScore}`;
+        cScore.textContent = `Computer Score is ${computerScore}`;
+        results.textContent = `${outcome}`;
+    } else {
+        hScore.textContent = `Your Score is ${humanScore}`;
+        cScore.textContent = `Computer Score is ${computerScore}`;
+        if (humanScore < computerScore){
+            endResult = "Computer wins the whole game!";
+        } else if (humanScore > computerScore){
+            console.log("You win!");
+            endResult = "You win the whole game!";
+        } else {
+            console.log("You tied.");
+            endResult = "You tied the whole game.";
+        }
+        results.textContent = `${outcome} ${endResult}`;
+
+    }
     return (console.log(outcome));
 }
 
 
-// const humanSelection = getHumanChoice();
-// const computerSelection = getComputerChoice();
-// playRound(humanSelection, computerSelection);
 
-function playGame() {
-    playRound();
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    playRound();
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    playRound();
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    playRound();
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    playRound();
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    if (humanScore < computerScore){
-        console.log("Computer wins!");
-    } else if (humanScore > computerScore){
-        console.log("You win!");
-    } else {
-        console.log("You tied.");
-    }
+rockBtn.addEventListener("click", getHumanChoice);
+paperBtn.addEventListener("click", getHumanChoice);
+scissorsBtn.addEventListener("click", getHumanChoice);
+
+resetBtn.addEventListener("click", function(){
+humanScore = 0;
+computerScore = 0;
+totalGames =0;
+throws.textContent =`Weclome to...`
+results.textContent = `Rock, Paper, Scissors!`;
+hScore.textContent = `Your Score is ${humanScore}`;
+cScore.textContent = `Computer Score is ${computerScore}`;
 }
-
-playGame();
-
-
-/* Step 6: Write the logic to play the entire game
-Your game will play 5 rounds. You will write a function named playGame that calls playRound to play 5 rounds, keeps track of the scores and declares a winner at the end.
-
-Create a new function named playGame.
-Move your playRound function and score variables so that they’re declared inside of the new playGame function
-Play 5 rounds by calling playRound 5 times.
-Hint: When you assign a function call to a variable, the return value of that function is assigned to the variable. Accessing the variable afterward will only provide the assigned value; it doesn’t recall the function. You need to recall the choice functions to get new choices for each round.
-Re-work your previous functions or create more helper functions if necessary. Specifically, you may want to change the return values to something more useful.
-If you already know about loops, you can use them. If not, don’t worry! Loops will be covered in the next lesson.*/
+)
