@@ -1,4 +1,3 @@
-console.log("Welcome to Rock, Paper, Scissors");
 
 // getComputerChoice returns a random string of rock, paper or scissors using Math.random();
 function getComputerChoice(){
@@ -15,6 +14,7 @@ function getComputerChoice(){
 }
 
 // The code below returns rock, paper or scissors depending on what the user clicks.
+const body = document.querySelector("body");
 const rockBtn = document.querySelector('#rock-btn');
 const paperBtn = document.querySelector('#paper-btn');
 const scissorsBtn = document.querySelector('#scissors-btn');
@@ -24,30 +24,30 @@ const results = document.querySelector('#results');
 const hScore = document.querySelector('#human-score');
 const cScore = document.querySelector("#computer-score");
 
-const resetBtn = document.querySelector('#reset');
+const resetBtn = document.createElement("button");
+resetBtn.textContent = "Restart Game";
+resetBtn.id ="reset";
+//const resetBtn = document.querySelector('#reset');
 
 function getHumanChoice(evt) {
-    if(totalGames<5){
-    let choice = evt.currentTarget.id;
-    if (choice === "rock-btn"){
-        choice = "rock"
-    } else if (choice === "paper-btn"){
-        choice = "paper"
-    } else {
-        choice = "scissors"
+    if(humanScore < 5 & computerScore < 5){
+        let choice = evt.currentTarget.id;
+        if (choice === "rock-btn"){
+            choice = "rock"
+        } else if (choice === "paper-btn"){
+            choice = "paper"
+        } else {
+            choice = "scissors"
+        }
+        playRound(choice);
     }
-    playRound(choice);
-}
 }
 
 
 
 let humanScore = 0;
 let computerScore = 0;
-let totalGames =0;
 
-throws.textContent =`Weclome to...`
-results.textContent = `Rock, Paper, Scissors!`;
 hScore.textContent = `Your Score is ${humanScore}`;
 cScore.textContent = `Computer Score is ${computerScore}`;
 
@@ -59,8 +59,6 @@ function playRound(choice) {
     const humanSelection = choice;
     const computerSelection = getComputerChoice();
     throws.textContent = `Human throws ${humanSelection}! Computer throws ${computerSelection}!`
-    console.log("Human throws "+ humanSelection+ "!");
-    console.log("Computer throws "+ computerSelection+ "!");
     if (humanSelection === "rock" && computerSelection === "rock" ){
        outcome = "You both threw rocks, you tied.";
     } else if (humanSelection === "rock" && computerSelection === "paper" ){
@@ -86,14 +84,12 @@ function playRound(choice) {
     } else {
             outcome = "You both threw scissors, you tied."
         }
-    console.log("Your Score is " + humanScore);
-    console.log("Computer Score is " + computerScore);
-    totalGames++
     let endResult ='';
-    if (totalGames < 5){
+    if (humanScore < 5 & computerScore < 5){
         hScore.textContent = `Your Score is ${humanScore}`;
         cScore.textContent = `Computer Score is ${computerScore}`;
         results.textContent = `${outcome}`;
+        body.append(resetBtn);
     } else {
         hScore.textContent = `Your Score is ${humanScore}`;
         cScore.textContent = `Computer Score is ${computerScore}`;
@@ -109,7 +105,6 @@ function playRound(choice) {
         results.textContent = `${outcome} ${endResult}`;
 
     }
-    return (console.log(outcome));
 }
 
 
@@ -121,10 +116,10 @@ scissorsBtn.addEventListener("click", getHumanChoice);
 resetBtn.addEventListener("click", function(){
 humanScore = 0;
 computerScore = 0;
-totalGames =0;
-throws.textContent =`Weclome to...`
-results.textContent = `Rock, Paper, Scissors!`;
 hScore.textContent = `Your Score is ${humanScore}`;
 cScore.textContent = `Computer Score is ${computerScore}`;
+throws.textContent='';
+results.textContent='';
+resetBtn.remove();
 }
 )
